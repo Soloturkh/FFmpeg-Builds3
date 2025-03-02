@@ -45,7 +45,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: [ubuntu-latest,ubuntu-24.04-arm]
+        runner: [ubuntu-latest]
     runs-on: ${{ matrix.runner }}
     steps:
       - name: Free Disk-Space
@@ -173,7 +173,7 @@ jobs:
       fail-fast: false
       matrix:
         target: [linux64]
-        variant: [nonfree 7.1,nonfree lto]
+        variant: [nonfree 7.1]
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc && df -h
@@ -238,7 +238,7 @@ jobs:
       fail-fast: false
       matrix:
         target: [linux64]
-        variant: [nonfree 7.1,nonfree lto]
+        variant: [nonfree 7.1]
     steps:
       - name: Free Disk-Space
         run: df -h && sudo apt-get clean && docker system prune -a -f && sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc && df -h
