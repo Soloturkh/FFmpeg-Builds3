@@ -19,7 +19,8 @@ fi
 rm -rf ffbuild
 mkdir ffbuild
 
-FFMPEG_REPO="${FFMPEG_REPO:-https://github.com/FFmpeg/FFmpeg.git}"
+#FFMPEG_REPO="${FFMPEG_REPO:-https://github.com/FFmpeg/FFmpeg.git}"
+FFMPEG_REPO="${FFMPEG_REPO:-https://github.com/Soloturkh/FFmpeg09022025u.git}"
 FFMPEG_REPO="${FFMPEG_REPO_OVERRIDE:-$FFMPEG_REPO}"
 GIT_BRANCH="${GIT_BRANCH:-master}"
 GIT_BRANCH="${GIT_BRANCH_OVERRIDE:-$GIT_BRANCH}"
@@ -32,8 +33,15 @@ cat <<EOF >"$BUILD_SCRIPT"
     cd /ffbuild
     rm -rf ffmpeg prefix
 
+    apt-get update && apt-get install -y zlib1g-dev libexpat1-dev
+
     git clone --filter=blob:none --branch='$GIT_BRANCH' '$FFMPEG_REPO' ffmpeg
     cd ffmpeg
+
+    # fix opencv4
+    cp configure configure.bak
+    # sed -i 's|check_pkg_config libopencv opencv opencv2/core/core_c.h cvCreateImageHeader|check_pkg_config libopencv opencv4 opencv2/core/core_c.h cvCreateImageHeader|g' configure
+    # sed -i 's|require_pkg_config libopencv opencv opencv/cxcore.h cvCreateImageHeader|require_pkg_config libopencv opencv4 opencv/cxcore.h cvCreateImageHeader|g' configure
 
     ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS \$FF_CONFIGURE \
         --extra-cflags="\$FF_CFLAGS" --extra-cxxflags="\$FF_CXXFLAGS" --extra-libs="\$FF_LIBS" \
